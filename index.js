@@ -1,17 +1,23 @@
-const express = require('express');​
+const express = require('express');
+const app = express();
+const { check, validationResult } = require('express-validator');
 
-const app = express();​
 
-​
+app.use(express.json());
+//  ANROP -> 
+//    om ej inloggad  -> 401
+//     om ej valid -> 422
+//   vår funktion 
 
-app.use(express.json());​
 
-app.post('/hello', (req, res) => {​
-
-  res.send(`Hello, ${req.body.name}!`);​
-
-});​
-
-​
+app.post('/hello',  check('name').notEmpty().withMessage('Cant be empty').bail(), 
+  (req, res) => {
+    const result = validationResult(req);
+    if (result.isEmpty()) {
+        res.send(`Hello, ${req.body.name}!`);
+    }else{
+        res.status(422).send({ errors: result.array() });
+    }
+});
 
 app.listen(3000);
