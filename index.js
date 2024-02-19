@@ -10,7 +10,9 @@ app.use(express.json());
 //   vår funktion 
 
 
-app.post('/hello',  check('name').notEmpty().withMessage('Cant be empty').bail(), 
+app.post('/hello',  
+    check('name').notEmpty().withMessage('Cant be empty'), 
+    check('email').isEmail().withMessage('Not an email address'),
   (req, res) => {
     const result = validationResult(req);
     if (result.isEmpty()) {
