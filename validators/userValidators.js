@@ -3,20 +3,19 @@ const {check, validationResult} = require('express-validator');
 const validateCreateUser = [
     check('email')
       .trim()
-      .normalizeEmail()
+      .normalizeEmail() 
+      .isEmail()
+      .withMessage('Invalid email address!')
       .not()
       .isEmpty()
-      .withMessage('Invalid email address!')
-      .bail(),
-  check('password')
+      .withMessage('Empty  email address!'),
+  check('name')
       .trim()
       .not()
       .isEmpty()
-      .withMessage('Password name can not be empty!')
-      .bail()
-      .isLength({min: 8})
-      .withMessage('Minimum 8 characters required!')
-      .bail(),
+      .withMessage('Name can not be empty!')
+      .isLength({min: 6})
+      .withMessage('Minimum 6 characters required!'),
   
     (req, res, next) => {
       const errors = validationResult(req);

@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const { check, validationResult } = require('express-validator');
+const { validateCreateUser } = require('./validators/userValidators.js');
 
 
 app.use(express.json());
@@ -10,16 +11,13 @@ app.use(express.json());
 //   vår funktion 
 
 
-app.post('/hello',  
-    check('name').notEmpty().withMessage('Cant be empty'), 
-    check('email').isEmail().withMessage('Not an email address'),
+//app.post('/hello', validateCreateUser , userController.createUser);
+
+
+
+app.post('/hello', validateCreateUser ,
   (req, res) => {
-    const result = validationResult(req);
-    if (result.isEmpty()) {
-        res.send(`Hello, ${req.body.name}!`);
-    }else{
-        res.status(422).send({ errors: result.array() });
-    }
+    res.send(`Hello, ${req.body.name}!`);
 });
 
 app.listen(3000);
